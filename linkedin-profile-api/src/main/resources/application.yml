@@ -1,0 +1,29 @@
+server:
+  port: ${PORT:8080}
+
+spring:
+  application:
+    name: linkedin-profile-api
+  cache:
+    cache-names: profiles
+    caffeine:
+      spec: maximumSize=500,expireAfterWrite=1h
+
+# Toggle which ProfileDataProvider implementation is active.
+# stub    -> returns deterministic mock data (default, safe out-of-the-box)
+# provider -> a licensed third-party enrichment/people-data API you configure below
+profile:
+  data-source: ${PROFILE_DATA_SOURCE:stub}
+  provider:
+    base-url: ${PROVIDER_BASE_URL:}
+    api-key: ${PROVIDER_API_KEY:}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+springdoc:
+  swagger-ui:
+    path: /docs
